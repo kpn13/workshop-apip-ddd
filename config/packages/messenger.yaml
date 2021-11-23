@@ -8,4 +8,6 @@ framework:
         transports:
             sync: 'sync://'
 
-        routing: ~
+        routing:
+            'App\Application\Shared\Query\QueryInterface': sync
+            'App\Application\Shared\Command\CommandInterface': sync
