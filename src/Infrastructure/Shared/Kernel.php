@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Shared;
 
+use App\Application\Shared\Command\CommandHandlerInterface;
+use App\Application\Shared\Query\QueryHandlerInterface;
+use App\Infrastructure\Shared\DependencyInjection\RemoveBuiltinProvidersAndPersistersPass;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
@@ -36,5 +40,16 @@ final class Kernel extends BaseKernel
         } else {
             $routes->import('../../../config/{routes}.php');
         }
+    }
+
+    protected function build(ContainerBuilder $container)
+    {
+        $container->registerForAutoconfiguration(QueryHandlerInterface::class)
+            ->addTag('messenger.message_handler', ['bus' => 'query.bus']);
+
+        $container->registerForAutoconfiguration(CommandHandlerInterface::class)
+            ->addTag('messenger.message_handler', ['bus' => 'command.bus']);
+
+        $container->addCompilerPass(new RemoveBuiltinProvidersAndPersistersPass());
     }
 }
