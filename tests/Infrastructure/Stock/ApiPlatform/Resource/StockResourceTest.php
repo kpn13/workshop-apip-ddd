@@ -21,8 +21,6 @@ final class StockResourceTest extends ApiTestCase
 
     public function testFindStock(): void
     {
-        $this->markTestSkipped();
-
         $this->client->request('GET', '/api/stocks/00000000-0000-0000-0000-000000000001');
         $this->assertResponseIsSuccessful();
         $this->assertMatchesResourceItemJsonSchema(StockResource::class);

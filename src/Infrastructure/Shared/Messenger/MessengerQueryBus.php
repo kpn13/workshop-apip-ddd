@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Shared\Messenger;
 
-use App\Application\Shared\Query\QueryInterface;
 use App\Application\Shared\Query\QueryBusInterface;
+use App\Application\Shared\Query\QueryInterface;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;

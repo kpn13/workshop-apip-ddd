@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Stock\Model;
 
-use App\Domain\Stock\Exception\EmptyStockException;
+use App\Domain\Stock\ValueObject\StockQuantity;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 
@@ -15,14 +15,14 @@ class Stock
     #[ORM\Column(type: 'string', unique: true)]
     private string $id;
 
-    #[ORM\Column(type: 'integer')]
-    private int $quantity;
+    #[ORM\Column(type: 'stock_quantity')]
+    private StockQuantity $quantity;
 
     #[ORM\Column(type: 'string')]
     private string $bookId;
 
     public function __construct(
-        int $quantity,
+        StockQuantity $quantity,
         string $bookId,
     ) {
         $this->id = (string) Uuid::uuid4();
@@ -37,7 +37,7 @@ class Stock
 
     public function getQuantity(): int
     {
-        return $this->quantity;
+        return $this->quantity->getQuantity();
     }
 
     public function getBookId(): string
@@ -47,10 +47,6 @@ class Stock
 
     public function decrease(): void
     {
-        if (0 === $this->quantity) {
-            throw new EmptyStockException();
-        }
-
-        --$this->quantity;
+        $this->quantity = new StockQuantity($this->quantity->getQuantity() - 1);
     }
 }

@@ -1,6 +1,8 @@
 doctrine:
     dbal:
         url: '%env(resolve:DATABASE_URL)%'
+        types:
+            stock_quantity: App\Infrastructure\Stock\DBAL\Type\StockQuantityType
 
     orm:
         auto_generate_proxy_classes: true

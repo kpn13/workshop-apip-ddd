@@ -4,6 +4,7 @@ api_platform:
             - '%kernel.project_dir%/src/Infrastructure/Book/ApiPlatform/Resource'
             - '%kernel.project_dir%/src/Infrastructure/Stock/ApiPlatform/Resource'
             - '%kernel.project_dir%/src/Application/Book/Command'
+            - '%kernel.project_dir%/src/Application/Stock/Command'
     patch_formats:
         json: ['application/merge-patch+json']
     swagger:

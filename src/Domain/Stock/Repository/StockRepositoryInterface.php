@@ -10,5 +10,7 @@ interface StockRepositoryInterface
 {
     public function search(string $id): ?Stock;
 
+    public function searchByBook(string $bookId): ?Stock;
+
     public function save(Stock $stock): void;
 }

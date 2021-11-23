@@ -21,6 +21,13 @@ final class StockRepository extends ServiceEntityRepository implements StockRepo
         return $this->find($id);
     }
 
+    public function searchByBook(string $bookId): ?Stock
+    {
+        return $this->findOneBy([
+            'bookId' => $bookId,
+        ]);
+    }
+
     public function save(Stock $stock): void
     {
         $this->getEntityManager()->persist($stock);

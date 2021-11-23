@@ -20,8 +20,6 @@ final class BorrowBookCommandTest extends ApiTestCase
 
     public function testBorrowBook(): void
     {
-        $this->markTestSkipped();
-
         $this->client->request('POST', '/api/books/00000000-0000-0000-0000-000000000001/borrow', [
             'json' => [],
         ]);
