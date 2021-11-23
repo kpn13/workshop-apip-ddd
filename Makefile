@@ -11,7 +11,7 @@ SYMFONY  = $(PHP_CONT) bin/console
 
 # Misc
 .DEFAULT_GOAL = help
-.PHONY        = help build up start down logs sh composer vendor sf cc
+.PHONY        = help build up start down logs sh composer vendor sf cc db-reset deptrac php-cs-fixer
 
 ## —— 🎵 🐳 The Symfony-docker Makefile 🐳 🎵 ——————————————————————————————————
 help: ## Outputs this help screen
@@ -51,3 +51,25 @@ sf: ## List all Symfony commands or pass the parameter "c=" to run a given comma
 
 cc: c=c:c ## Clear the cache
 cc: sf
+
+## —— Doctrine 🎵 ———————————————————————————————————————————————————————————————
+db-reset: ## Reset database
+	@$(SYMFONY) doctrine:database:drop --force --if-exists -nq
+	@$(SYMFONY) doctrine:database:create -nq
+	@$(SYMFONY) doctrine:migrations:migrate -nq
+	@$(SYMFONY) doctrine:fixtures:load -nq
+
+## —— Deptrac 🎵 ———————————————————————————————————————————————————————————————
+deptrac: ## Run layers depedencies analysis
+	@echo "\n\e[7mChecking DDD layers...\e[0m"
+	@$(PHP_CONT) vendor/bin/deptrac analyze --fail-on-uncovered --report-uncovered --no-progress depfile_ddd.yaml
+	@echo "\n\e[7mChecking Bounded context layers...\e[0m"
+	@$(PHP_CONT) vendor/bin/deptrac analyze --fail-on-uncovered --report-uncovered --no-progress depfile_bc.yaml
+
+## —— PHP-CS-Fixer 🎵 ———————————————————————————————————————————————————————————————
+php-cs-fixer: ## Fix PHP code style
+	@$(PHP_CONT) vendor/bin/php-cs-fixer fix
+
+## —— PHPUnit 🎵 ———————————————————————————————————————————————————————————————
+phpunit: ## Run tests
+	@$(PHP_CONT) bin/phpunit

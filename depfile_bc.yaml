@@ -1,0 +1,30 @@
+paths: [ src ]
+
+layers:
+    - name: Book
+      collectors:
+          - type: directory
+            regex: src/[^/]+/Book/.*
+
+    - name: Stock
+      collectors:
+          - type: directory
+            regex: src/[^/]+/Stock/.*
+
+    - name: Shared
+      collectors:
+          - type: directory
+            regex: src/[^/]+/Shared/.*
+
+    - name: Vendors
+      collectors:
+          - { type: className, regex: ^ApiPlatform\\ }
+          - { type: className, regex: ^Doctrine\\ }
+          - { type: className, regex: ^Symfony\\ }
+          - { type: className, regex: ^Zenstruck\\ }
+          - { type: className, regex: ^Ramsey\\ }
+
+ruleset:
+    Book: [ Shared, Vendors ]
+    Stock: [ Shared, Vendors ]
+    Shared: [ Vendors ]
